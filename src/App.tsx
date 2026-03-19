@@ -169,6 +169,7 @@ export default function App() {
       goal: ''
     });
     setIsSuccess(false);
+    setIsSubmitting(false);
     setRedirectState('idle');
     setPhoneError('');
   };
@@ -230,6 +231,7 @@ export default function App() {
       if (response.ok) {
         setIsSuccess(true);
         setRedirectState('redirecting');
+        setIsSubmitting(false);
         // Redirect after a short delay to show success message
         setTimeout(() => {
           window.location.href = whatsappUrl;
