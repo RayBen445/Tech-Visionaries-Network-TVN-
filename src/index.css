@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* intl-tel-input Dark Theme Overrides */
+.iti {
+  width: 100%;
+  display: block;
+}
+
+.iti__country-list {
+  background-color: #0B0F19 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  backdrop-filter: blur(12px);
+  border-radius: 12px !important;
+  margin-top: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.iti__country {
+  padding: 10px 15px !important;
+  transition: background-color 0.2s;
+}
+
+.iti__country:hover, .iti__country.iti__highlight {
+  background-color: rgba(0, 209, 255, 0.1) !important;
+}
+
+.iti__selected-flag {
+  background-color: transparent !important;
+  border-radius: 12px 0 0 12px !important;
+  padding-left: 16px !important;
+}
+
+.iti__selected-dial-code {
+  color: #9CA3AF !important;
+  font-size: 14px;
+}
+
+.iti__arrow {
+  border-top-color: #9CA3AF !important;
+}
+
+.iti__arrow--up {
+  border-bottom-color: #9CA3AF !important;
+}
+
+/* Input Focus Glow */
+.focus-glow:focus {
+  box-shadow: 0 0 15px rgba(0, 209, 255, 0.2);
+}
+
+/* Smooth Transitions */
+input, select, textarea, button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
