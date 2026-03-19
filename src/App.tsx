@@ -10,7 +10,7 @@ import ThreeBackground from './components/ThreeBackground';
 import CustomDropdown from './components/CustomDropdown';
 import CountdownTimer from './components/CountdownTimer';
 import intlTelInput from 'intl-tel-input';
-import 'intl-tel-input/build/css/intlTelInput.css';
+import 'intl-tel-input/styles';
 
 export default function App() {
   const [formData, setFormData] = useState({
@@ -64,7 +64,11 @@ export default function App() {
   useEffect(() => {
     if (itiRef.current && formData.country === 'Others' && formData.otherCountry) {
       // Try to match the typed country name to a country code
-      const countries = (window as any).intlTelInputGlobals?.getCountryData() || [];
+      // Use the imported intlTelInput if available, otherwise fallback to global
+      const getCountryData = (intlTelInput as any).getCountryData || (window as any).intlTelInputGlobals?.getCountryData;
+      const countries = getCountryData?.() || [];
+      if (countries.length === 0) return;
+      
       const match = countries.find((c: any) => 
         c.name.toLowerCase().includes(formData.otherCountry.toLowerCase()) ||
         c.iso2.toLowerCase() === formData.otherCountry.toLowerCase()
