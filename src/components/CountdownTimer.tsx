@@ -9,12 +9,8 @@ interface TimeLeft {
 }
 
 const CountdownTimer: React.FC = () => {
-  // Set target date to 7 days from now
-  const [targetDate] = useState(() => {
-    const date = new Date();
-    date.setDate(date.getDate() + 7);
-    return date.getTime();
-  });
+  // Set target date to launch date
+  const [targetDate] = useState(() => new Date("2026-03-26T23:59:59").getTime());
 
   const calculateTimeLeft = (): TimeLeft | null => {
     const now = new Date().getTime();
@@ -82,7 +78,7 @@ const CountdownTimer: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]"
           >
-            NETWORK ACTIVE
+            We Are Live 🚀
           </motion.div>
         )}
       </AnimatePresence>
