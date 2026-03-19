@@ -33,9 +33,7 @@ export default function App() {
   const itiRef = useRef<any>(null);
 
   const formspreeId = import.meta.env.VITE_FORMSPREE_ID || 'maqpvynn';
-  const whatsappNumber = "2348075614248";
-  const whatsappMessage = encodeURIComponent("Hi, I just joined Tech Visionaries Network. Looking forward to building and collaborating.");
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  const whatsappUrl = "https://chat.whatsapp.com/Kx56TOXN1NT4xqcThPmeAI?mode=gi_t";
 
   const countryToIso: Record<string, string> = {
     "Algeria": "dz", "Angola": "ao", "Benin": "bj", "Botswana": "bw", "Burkina Faso": "bf",
@@ -138,7 +136,7 @@ export default function App() {
     const shareData = {
       title: 'Tech Visionaries Network',
       text: 'Join Tech Visionaries Network — Africa’s Tech Builders Network',
-      url: 'https://tvnnetwork.zone.id'
+      url: 'https://tvnetwork.zone.id'
     };
 
     if (navigator.share) {
@@ -476,16 +474,16 @@ export default function App() {
                     >
                       <CheckCircle2 size={48} />
                     </motion.div>
-                    <h2 className="text-3xl font-bold">Welcome to TVN!</h2>
+                    <h2 className="text-3xl font-bold">Welcome to TVN 🚀</h2>
                     <p className="text-gray-400 text-lg">
-                      Your application has been received successfully.
+                      Redirecting you to the community...
                     </p>
 
                     {redirectState !== 'redirected' ? (
                       <div className="flex flex-col items-center gap-3 pt-4">
                         <Loader2 size={24} className="animate-spin text-cyan-400" />
                         <p className="text-cyan-400 font-medium animate-pulse">
-                          Redirecting you to WhatsApp...
+                          Redirecting you to the community...
                         </p>
                       </div>
                     ) : (
@@ -495,7 +493,7 @@ export default function App() {
                         className="flex flex-col items-center gap-4 pt-4"
                       >
                         <p className="text-cyan-400 font-medium">
-                          You’ve been redirected to WhatsApp ✅
+                          You’ve been redirected to the community ✅
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center max-w-sm mx-auto">
                           <button
@@ -503,7 +501,7 @@ export default function App() {
                             className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-xl font-medium transition-colors"
                           >
                             <ExternalLink size={18} />
-                            Open WhatsApp Again
+                            Join WhatsApp Group
                           </button>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 w-full justify-center max-w-sm mx-auto">
