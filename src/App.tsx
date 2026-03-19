@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, User, Mail, Phone, Briefcase, Target, Award, Loader2, CheckCircle2, Globe } from 'lucide-react';
+import { Send, User, Mail, Phone, Briefcase, Target, Award, Loader2, CheckCircle2, Globe, Share2, RefreshCw, ExternalLink } from 'lucide-react';
 import ThreeBackground from './components/ThreeBackground';
 import CustomDropdown from './components/CustomDropdown';
 import CountdownTimer from './components/CountdownTimer';
@@ -26,6 +26,7 @@ export default function App() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [redirectState, setRedirectState] = useState<'idle' | 'redirecting' | 'redirected'>('idle');
   const [phoneError, setPhoneError] = useState('');
   
   const phoneInputRef = useRef<HTMLInputElement>(null);
@@ -133,6 +134,46 @@ export default function App() {
     };
   }, [isSuccess]);
 
+  const handleShare = async () => {
+    const shareData = {
+      title: 'Tech Visionaries Network',
+      text: 'Join Tech Visionaries Network — Africa’s Tech Builders Network',
+      url: 'https://tvnnetwork.zone.id'
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.warn('Error sharing', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+        alert('Link copied to clipboard!');
+      } catch (err) {
+        console.error('Failed to copy', err);
+      }
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      fullName: '',
+      email: '',
+      country: '',
+      otherCountry: '',
+      phone: '',
+      role: '',
+      skillLevel: '',
+      goal: ''
+    });
+    setIsSuccess(false);
+    setIsSubmitting(false);
+    setRedirectState('idle');
+    setPhoneError('');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -189,9 +230,12 @@ export default function App() {
 
       if (response.ok) {
         setIsSuccess(true);
+        setRedirectState('redirecting');
+        setIsSubmitting(false);
         // Redirect after a short delay to show success message
         setTimeout(() => {
           window.location.href = whatsappUrl;
+          setRedirectState('redirected');
         }, 2000);
       } else {
         alert('Something went wrong. Please try again.');
@@ -436,12 +480,50 @@ export default function App() {
                     <p className="text-gray-400 text-lg">
                       Your application has been received successfully.
                     </p>
-                    <div className="flex flex-col items-center gap-3 pt-4">
-                      <Loader2 size={24} className="animate-spin text-cyan-400" />
-                      <p className="text-cyan-400 font-medium animate-pulse">
-                        Redirecting you to WhatsApp...
-                      </p>
-                    </div>
+
+                    {redirectState !== 'redirected' ? (
+                      <div className="flex flex-col items-center gap-3 pt-4">
+                        <Loader2 size={24} className="animate-spin text-cyan-400" />
+                        <p className="text-cyan-400 font-medium animate-pulse">
+                          Redirecting you to WhatsApp...
+                        </p>
+                      </div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex flex-col items-center gap-4 pt-4"
+                      >
+                        <p className="text-cyan-400 font-medium">
+                          You’ve been redirected to WhatsApp ✅
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center max-w-sm mx-auto">
+                          <button
+                            onClick={() => window.location.href = whatsappUrl}
+                            className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-xl font-medium transition-colors"
+                          >
+                            <ExternalLink size={18} />
+                            Open WhatsApp Again
+                          </button>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-3 w-full justify-center max-w-sm mx-auto">
+                          <button
+                            onClick={handleReset}
+                            className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 px-4 rounded-xl font-medium transition-colors"
+                          >
+                            <RefreshCw size={18} />
+                            Submit Another Response
+                          </button>
+                          <button
+                            onClick={handleShare}
+                            className="flex-1 flex items-center justify-center gap-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 border border-cyan-500/30 py-3 px-4 rounded-xl font-medium transition-colors"
+                          >
+                            <Share2 size={18} />
+                            Share TVN
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
