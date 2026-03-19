@@ -17,6 +17,7 @@ export default function App() {
     fullName: '',
     email: '',
     country: '',
+    otherCountry: '',
     phone: '',
     role: '',
     skillLevel: '',
@@ -35,6 +36,45 @@ export default function App() {
   const whatsappMessage = encodeURIComponent("Hi, I just joined Tech Visionaries Network. Looking forward to building and collaborating.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
+  const countryToIso: Record<string, string> = {
+    "Algeria": "dz", "Angola": "ao", "Benin": "bj", "Botswana": "bw", "Burkina Faso": "bf",
+    "Burundi": "bi", "Cabo Verde": "cv", "Cameroon": "cm", "Central African Republic": "cf",
+    "Chad": "td", "Comoros": "km", "Congo (Congo-Brazzaville)": "cg",
+    "Democratic Republic of the Congo": "cd", "Djibouti": "dj", "Egypt": "eg",
+    "Equatorial Guinea": "gq", "Eritrea": "er", "Eswatini": "sz", "Ethiopia": "et",
+    "Gabon": "ga", "Gambia": "gm", "Ghana": "gh", "Guinea": "gn", "Guinea-Bissau": "gw",
+    "Ivory Coast": "ci", "Kenya": "ke", "Lesotho": "ls", "Liberia": "lr", "Libya": "ly",
+    "Madagascar": "mg", "Malawi": "mw", "Mali": "ml", "Mauritania": "mr", "Mauritius": "mu",
+    "Morocco": "ma", "Mozambique": "mz", "Namibia": "na", "Niger": "ne", "Nigeria": "ng",
+    "Rwanda": "rw", "Sao Tome and Principe": "st", "Senegal": "sn", "Seychelles": "sc",
+    "Sierra Leone": "sl", "Somalia": "so", "South Africa": "za", "South Sudan": "ss",
+    "Sudan": "sd", "Tanzania": "tz", "Togo": "tg", "Tunisia": "tn", "Uganda": "ug",
+    "Zambia": "zm", "Zimbabwe": "zw"
+  };
+
+  useEffect(() => {
+    if (itiRef.current && formData.country && formData.country !== 'Others') {
+      const iso = countryToIso[formData.country];
+      if (iso) {
+        itiRef.current.setCountry(iso);
+      }
+    }
+  }, [formData.country]);
+
+  useEffect(() => {
+    if (itiRef.current && formData.country === 'Others' && formData.otherCountry) {
+      // Try to match the typed country name to a country code
+      const countries = (window as any).intlTelInputGlobals?.getCountryData() || [];
+      const match = countries.find((c: any) => 
+        c.name.toLowerCase().includes(formData.otherCountry.toLowerCase()) ||
+        c.iso2.toLowerCase() === formData.otherCountry.toLowerCase()
+      );
+      if (match) {
+        itiRef.current.setCountry(match.iso2);
+      }
+    }
+  }, [formData.otherCountry]);
+
   useEffect(() => {
     let itiInstance: any;
     
@@ -43,10 +83,30 @@ export default function App() {
         itiInstance = intlTelInput(phoneInputRef.current, {
           initialCountry: "auto",
           geoIpLookup: (callback) => {
+            let called = false;
+            const timeoutId = setTimeout(() => {
+              if (!called) {
+                called = true;
+                callback("ng");
+              }
+            }, 2000);
+
             fetch("https://ipapi.co/json")
               .then((res) => res.json())
-              .then((data) => callback(data.country_code.toLowerCase()))
-              .catch(() => callback("ng"));
+              .then((data) => {
+                if (!called) {
+                  called = true;
+                  clearTimeout(timeoutId);
+                  callback(data.country_code?.toLowerCase() || "ng");
+                }
+              })
+              .catch(() => {
+                if (!called) {
+                  called = true;
+                  clearTimeout(timeoutId);
+                  callback("ng");
+                }
+              });
           },
           separateDialCode: true,
           utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
@@ -76,7 +136,11 @@ export default function App() {
   };
 
   const handleCustomChange = (name: string, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: value,
+      otherCountry: name === 'country' && value !== 'Others' ? '' : prev.otherCountry
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,6 +160,11 @@ export default function App() {
       // Get full international number (E.164)
       const fullNumber = itiRef.current.getNumber();
       finalFormData.phone = fullNumber;
+    }
+
+    // Use otherCountry if country is "Others"
+    if (finalFormData.country === 'Others' && finalFormData.otherCountry) {
+      finalFormData.country = finalFormData.otherCountry;
     }
 
     setIsSubmitting(true);
@@ -230,11 +299,38 @@ export default function App() {
                         icon={<Globe size={16} className="text-cyan-400" />}
                         name="country"
                         value={formData.country}
-                        options={["Nigeria", "Ghana", "Kenya", "South Africa", "Egypt", "Ethiopia", "Rwanda", "Others"]}
+                        options={[
+                          "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Congo (Congo-Brazzaville)", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Sao Tome and Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe", "Others"
+                        ]}
                         placeholder="Select Country"
                         onChange={handleCustomChange}
                         required
                       />
+
+                      {/* Other Country Input (Conditional) */}
+                      <AnimatePresence>
+                        {formData.country === 'Others' && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="space-y-2 overflow-hidden"
+                          >
+                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 ml-1">
+                              <Globe size={16} className="text-cyan-400" /> Specify Country
+                            </label>
+                            <input
+                              type="text"
+                              name="otherCountry"
+                              required
+                              value={formData.otherCountry}
+                              onChange={handleChange}
+                              placeholder="Enter your country"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 focus-glow transition-all duration-300"
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
 
                       {/* Phone (intl-tel-input) */}
                       <div className="space-y-2">
