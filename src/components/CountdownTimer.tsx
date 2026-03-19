@@ -8,7 +8,11 @@ interface TimeLeft {
   seconds: number;
 }
 
-const CountdownTimer: React.FC = () => {
+interface CountdownTimerProps {
+  onComplete?: () => void;
+}
+
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ onComplete }) => {
   // Set target date to launch date
   const [targetDate] = useState(() => new Date("2026-03-26T23:59:59").getTime());
 
@@ -31,16 +35,23 @@ const CountdownTimer: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(calculateTimeLeft());
 
   useEffect(() => {
+    // Initial check
+    if (!calculateTimeLeft()) {
+      if (onComplete) onComplete();
+      return;
+    }
+
     const timer = setInterval(() => {
       const updatedTime = calculateTimeLeft();
       setTimeLeft(updatedTime);
       if (!updatedTime) {
         clearInterval(timer);
+        if (onComplete) onComplete();
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [targetDate, onComplete]);
 
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
