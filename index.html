@@ -1,32 +1,275 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tech Visionaries Network (TVN) — Africa’s Tech Builders Network</title>
-    <meta name="description" content="Join Tech Visionaries Network (TVN) — a community of developers, innovators, and builders shaping the future of tech in Africa." />
-    <meta name="keywords" content="tech community, African developers, coding network, tech builders Africa, TVN" />
-    <link rel="canonical" href="https://tvn.zone.id" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Network | Founding Members Access</title>
+    <meta name="description" content="Join the exclusive network of tech visionaries and digital pioneers.">
+    
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- intl-tel-input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/24.5.0/css/intlTelInput.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="Tech Visionaries Network (TVN) — Africa’s Tech Builders Network" />
-    <meta property="og:description" content="Join a network of developers, innovators, and builders shaping Africa’s tech future." />
-    <meta property="og:image" content="https://tvn.zone.id/preview.png" />
-    <meta property="og:url" content="https://tvn.zone.id" />
-    <meta property="og:type" content="website" />
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+            --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+        }
+    </style>
+</head>
+<body class="bg-[#0B0F19] text-white font-sans selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
+    <!-- Three.js Background Container -->
+    <div id="three-container" class="fixed inset-0 -z-10 bg-[#0B0F19]"></div>
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Tech Visionaries Network (TVN)" />
-    <meta name="twitter:description" content="Africa’s Tech Builders Network" />
-    <meta name="twitter:image" content="https://tvn.zone.id/preview.png" />
+    <!-- Main Content -->
+    <main class="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+        <!-- Header Section -->
+        <div class="w-full max-w-4xl mx-auto text-center mb-12 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono tracking-widest uppercase mb-4">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                </span>
+                System Status: Initializing
+            </div>
 
-    <!-- Favicon -->
-    <link rel="icon" href="/favicon.ico" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+            <h1 class="text-5xl md:text-8xl font-bold tracking-tighter leading-none">
+                THE <span class="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40">NETWORK</span>
+            </h1>
+            
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+                A decentralized collective of tech visionaries. 
+                <span class="text-white font-medium">Founding member access</span> is strictly limited.
+            </p>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="w-full flex flex-col items-center justify-center mb-8 space-y-4">
+            <p class="text-cyan-400/80 text-xs md:text-sm font-mono tracking-[0.3em] uppercase">
+                Founding Members Access Opens In
+            </p>
+            <div id="countdown-timer">
+                <!-- Timer will be injected here -->
+            </div>
+        </div>
+
+        <!-- Registration Form Card -->
+        <div class="w-full max-w-xl mx-auto">
+            <div class="relative group">
+                <!-- Glow Effect -->
+                <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+                
+                <div class="relative bg-[#0B0F19]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-2xl">
+                    <form id="registration-form" class="space-y-6">
+                        <!-- Full Name -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Full Name</label>
+                            <div class="relative">
+                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+                                <input 
+                                    type="text" 
+                                    name="fullName" 
+                                    required
+                                    placeholder="Enter your full name"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 focus-glow"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Digital Identity (Email)</label>
+                            <div class="relative">
+                                <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    required
+                                    placeholder="name@domain.com"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 focus-glow"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Country Selection -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Base of Operations (Country)</label>
+                            <div class="relative">
+                                <button type="button" id="country-dropdown-btn" class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 px-4 text-left flex items-center justify-between group hover:bg-white/10 transition-all duration-300">
+                                    <span id="selected-country-text" class="text-gray-400">Select your country</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition-colors"></i>
+                                </button>
+                                <input type="hidden" name="country" id="country-input" required>
+                                
+                                <div id="country-dropdown-menu" class="dropdown-menu absolute z-50 w-full mt-2 bg-[#0B0F19] border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+                                    <div class="max-h-60 overflow-y-auto custom-scrollbar p-2">
+                                        <!-- Countries -->
+                                        <div class="px-4 py-2 text-xs font-mono text-gray-500 uppercase tracking-widest border-b border-white/5 mb-2">African Nations</div>
+                                        <button type="button" data-value="Algeria" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Algeria</button>
+                                        <button type="button" data-value="Angola" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Angola</button>
+                                        <button type="button" data-value="Benin" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Benin</button>
+                                        <button type="button" data-value="Botswana" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Botswana</button>
+                                        <button type="button" data-value="Burkina Faso" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Burkina Faso</button>
+                                        <button type="button" data-value="Burundi" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Burundi</button>
+                                        <button type="button" data-value="Cabo Verde" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Cabo Verde</button>
+                                        <button type="button" data-value="Cameroon" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Cameroon</button>
+                                        <button type="button" data-value="Central African Republic" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Central African Republic</button>
+                                        <button type="button" data-value="Chad" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Chad</button>
+                                        <button type="button" data-value="Comoros" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Comoros</button>
+                                        <button type="button" data-value="Congo (Congo-Brazzaville)" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Congo (Congo-Brazzaville)</button>
+                                        <button type="button" data-value="Congo (DRC)" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Congo (DRC)</button>
+                                        <button type="button" data-value="Djibouti" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Djibouti</button>
+                                        <button type="button" data-value="Egypt" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Egypt</button>
+                                        <button type="button" data-value="Equatorial Guinea" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Equatorial Guinea</button>
+                                        <button type="button" data-value="Eritrea" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Eritrea</button>
+                                        <button type="button" data-value="Eswatini" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Eswatini</button>
+                                        <button type="button" data-value="Ethiopia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Ethiopia</button>
+                                        <button type="button" data-value="Gabon" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Gabon</button>
+                                        <button type="button" data-value="Gambia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Gambia</button>
+                                        <button type="button" data-value="Ghana" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Ghana</button>
+                                        <button type="button" data-value="Guinea" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Guinea</button>
+                                        <button type="button" data-value="Guinea-Bissau" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Guinea-Bissau</button>
+                                        <button type="button" data-value="Ivory Coast" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Ivory Coast</button>
+                                        <button type="button" data-value="Kenya" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Kenya</button>
+                                        <button type="button" data-value="Lesotho" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Lesotho</button>
+                                        <button type="button" data-value="Liberia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Liberia</button>
+                                        <button type="button" data-value="Libya" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Libya</button>
+                                        <button type="button" data-value="Madagascar" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Madagascar</button>
+                                        <button type="button" data-value="Malawi" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Malawi</button>
+                                        <button type="button" data-value="Mali" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Mali</button>
+                                        <button type="button" data-value="Mauritania" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Mauritania</button>
+                                        <button type="button" data-value="Mauritius" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Mauritius</button>
+                                        <button type="button" data-value="Morocco" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Morocco</button>
+                                        <button type="button" data-value="Mozambique" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Mozambique</button>
+                                        <button type="button" data-value="Namibia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Namibia</button>
+                                        <button type="button" data-value="Niger" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Niger</button>
+                                        <button type="button" data-value="Nigeria" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Nigeria</button>
+                                        <button type="button" data-value="Rwanda" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Rwanda</button>
+                                        <button type="button" data-value="Sao Tome and Principe" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Sao Tome and Principe</button>
+                                        <button type="button" data-value="Senegal" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Senegal</button>
+                                        <button type="button" data-value="Seychelles" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Seychelles</button>
+                                        <button type="button" data-value="Sierra Leone" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Sierra Leone</button>
+                                        <button type="button" data-value="Somalia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Somalia</button>
+                                        <button type="button" data-value="South Africa" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">South Africa</button>
+                                        <button type="button" data-value="South Sudan" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">South Sudan</button>
+                                        <button type="button" data-value="Sudan" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Sudan</button>
+                                        <button type="button" data-value="Tanzania" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Tanzania</button>
+                                        <button type="button" data-value="Togo" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Togo</button>
+                                        <button type="button" data-value="Tunisia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Tunisia</button>
+                                        <button type="button" data-value="Uganda" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Uganda</button>
+                                        <button type="button" data-value="Zambia" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Zambia</button>
+                                        <button type="button" data-value="Zimbabwe" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Zimbabwe</button>
+                                        
+                                        <div class="px-4 py-2 text-xs font-mono text-gray-500 uppercase tracking-widest border-t border-white/5 mt-2 mb-2">Other Regions</div>
+                                        <button type="button" data-value="Others" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-200">Others</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conditional Other Country Input -->
+                        <div id="other-country-container" class="space-y-2 hidden">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Specify Country</label>
+                            <input 
+                                type="text" 
+                                id="other-country-input"
+                                name="otherCountry" 
+                                placeholder="Enter your country"
+                                class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 focus-glow"
+                            >
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Secure Line (Phone)</label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone_raw"
+                                required
+                                class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 focus-glow"
+                            >
+                        </div>
+
+                        <!-- Role Selection -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Primary Specialization</label>
+                            <select 
+                                name="role" 
+                                required
+                                class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 px-4 text-white focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 focus-glow appearance-none"
+                            >
+                                <option value="" disabled selected class="bg-[#0B0F19]">Select your role</option>
+                                <option value="Developer" class="bg-[#0B0F19]">Developer / Engineer</option>
+                                <option value="Designer" class="bg-[#0B0F19]">Product Designer</option>
+                                <option value="Founder" class="bg-[#0B0F19]">Founder / Entrepreneur</option>
+                                <option value="Investor" class="bg-[#0B0F19]">Investor / VC</option>
+                                <option value="Other" class="bg-[#0B0F19]">Other Visionary</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit" 
+                            id="submit-btn"
+                            class="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Join Network
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center space-y-4">
+            <p class="text-gray-500 text-sm font-mono uppercase tracking-[0.2em]">
+                &copy; 2026 THE NETWORK. ALL RIGHTS RESERVED.
+            </p>
+            <div class="flex items-center justify-center gap-6">
+                <a href="#" class="text-gray-600 hover:text-cyan-400 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="text-gray-600 hover:text-cyan-400 transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="#" class="text-gray-600 hover:text-cyan-400 transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+        <div class="bg-[#0B0F19] border border-cyan-500/30 rounded-2xl p-8 max-w-md w-full text-center space-y-6 shadow-[0_0_50px_rgba(34,211,238,0.2)]">
+            <div class="w-20 h-20 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto border border-cyan-500/20">
+                <i data-lucide="check" class="w-10 h-10 text-cyan-400"></i>
+            </div>
+            <h2 class="text-3xl font-bold tracking-tight">Access Granted</h2>
+            <p class="text-gray-400 leading-relaxed">
+                Your credentials have been verified. Welcome to <span class="text-white font-medium">The Network</span>. 
+                Check your digital identity for further instructions.
+            </p>
+            <button id="close-success" class="w-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 font-bold py-3 rounded-xl border border-cyan-500/20 transition-all duration-300">
+                Acknowledge
+            </button>
+        </div>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/24.5.0/js/intlTelInput.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Script -->
+    <script src="./js/script.js"></script>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
 </html>
-
