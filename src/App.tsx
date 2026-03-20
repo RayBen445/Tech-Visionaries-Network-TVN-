@@ -9,6 +9,8 @@ import TvnHub from "./components/TvnHub";
 import JoinModal from "./components/JoinModal";
 import AdminLogin from "./components/AdminLogin";
 import Blog from "./components/Blog";
+import UserDashboard from "./components/UserDashboard";
+import PublicProfile from "./components/PublicProfile";
 import { SettingsProvider } from "./contexts/SettingsContext";
 import { CmsProvider } from "./contexts/CmsContext";
 import AnnouncementBanner from "./components/AnnouncementBanner";
@@ -17,6 +19,8 @@ export default function App() {
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [isAdminRoute, setIsAdminRoute] = useState(false);
   const [isBlogRoute, setIsBlogRoute] = useState(false);
+  const [isDashboardRoute, setIsDashboardRoute] = useState(false);
+  const [isProfileRoute, setIsProfileRoute] = useState(false);
 
   useEffect(() => {
     // Simple path-based routing
@@ -25,8 +29,32 @@ export default function App() {
       setIsAdminRoute(true);
     } else if (path === '/blog' || path === '/updates') {
       setIsBlogRoute(true);
+    } else if (path === '/dashboard') {
+      setIsDashboardRoute(true);
+    } else if (path.startsWith('/u/')) {
+      setIsProfileRoute(true);
+      setIsBlogRoute(true);
     }
   }, []);
+
+  if (isDashboardRoute) {
+    return (
+      <SettingsProvider>
+        <CmsProvider>
+          <UserDashboard />
+        </CmsProvider>
+      </SettingsProvider>
+    );
+  }
+  if (isProfileRoute) {
+    return (
+      <SettingsProvider>
+        <CmsProvider>
+          <PublicProfile />
+        </CmsProvider>
+      </SettingsProvider>
+    );
+  }
 
   if (isBlogRoute) {
     return (
