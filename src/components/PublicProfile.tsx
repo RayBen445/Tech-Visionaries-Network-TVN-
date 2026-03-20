@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion } from 'motion/react';
-import { Loader2, User, MapPin, Briefcase, Calendar, Code, ArrowLeft } from 'lucide-react';
+import { Loader2, User, MapPin, Briefcase, Calendar, Code, ArrowLeft, UserPlus, Clock, Check, X } from 'lucide-react';
+import { Connection } from './UserDashboard';
 
 interface UserProfile {
   id: string;
@@ -19,9 +20,16 @@ export default function PublicProfile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [session, setSession] = useState<any>(null);
+  const [connection, setConnection] = useState<Connection | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
     // Extract username from /u/:username
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
     const username = window.location.pathname.split('/').pop();
     if (username) {
       fetchProfile(username);
@@ -30,6 +38,62 @@ export default function PublicProfile() {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (session && profile) {
+      fetchConnectionStatus();
+    }
+  }, [session, profile]);
+
+
+  const fetchConnectionStatus = async () => {
+    if (!session || !profile) return;
+    try {
+      const { data, error } = await supabase
+        .from('connections')
+        .select('*')
+        .or(`and(requester_id.eq.${session.user.id},receiver_id.eq.${profile.id}),and(requester_id.eq.${profile.id},receiver_id.eq.${session.user.id})`)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116' && error.code !== '42P01') throw error;
+      if (data) setConnection(data as Connection);
+    } catch (err) {
+      console.error('Error fetching connection:', err);
+    }
+  };
+
+  const handleConnect = async () => {
+    if (!session || !profile) return;
+    setActionLoading(true);
+    try {
+      const { error } = await supabase
+        .from('connections')
+        .insert([{ requester_id: session.user.id, receiver_id: profile.id, status: 'pending' }]);
+      if (error) throw error;
+      await fetchConnectionStatus();
+    } catch (err) {
+      console.error('Error sending request:', err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleAction = async (status: 'accepted' | 'rejected') => {
+    if (!connection) return;
+    setActionLoading(true);
+    try {
+      const { error } = await supabase
+        .from('connections')
+        .update({ status })
+        .eq('id', connection.id);
+      if (error) throw error;
+      await fetchConnectionStatus();
+    } catch (err) {
+      console.error('Error updating request:', err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   const fetchProfile = async (username: string) => {
     try {
@@ -117,6 +181,36 @@ export default function PublicProfile() {
                   @{profile.username}
                 </p>
               </div>
+                {/* Connection Action */}
+                {session && session.user.id !== profile.id && (
+                  <div className="mt-2 md:mt-0 md:ml-auto">
+                    {connection?.status === 'accepted' ? (
+                      <div className="bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-4 py-2 rounded-xl font-medium flex items-center gap-2">
+                        <Check size={18} /> Connected
+                      </div>
+                    ) : connection?.status === 'pending' ? (
+                      connection.requester_id === session.user.id ? (
+                        <div className="bg-white/5 border border-white/10 text-gray-400 px-4 py-2 rounded-xl font-medium flex items-center gap-2">
+                          <Clock size={18} /> Pending
+                        </div>
+                      ) : (
+                        <div className="flex gap-2">
+                          <button onClick={() => handleAction('rejected')} disabled={actionLoading} className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-4 py-2 rounded-xl transition-colors font-medium flex items-center justify-center disabled:opacity-50">
+                            Reject
+                          </button>
+                          <button onClick={() => handleAction('accepted')} disabled={actionLoading} className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 border border-cyan-500/30 px-4 py-2 rounded-xl transition-colors font-medium flex items-center justify-center disabled:opacity-50">
+                            Accept
+                          </button>
+                        </div>
+                      )
+                    ) : (
+                      <button onClick={handleConnect} disabled={actionLoading} className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-6 py-2 rounded-xl font-medium flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-lg disabled:opacity-50 disabled:hover:scale-100">
+                        {actionLoading ? <Loader2 size={18} className="animate-spin" /> : <UserPlus size={18} />} Connect
+                      </button>
+                    )}
+                  </div>
+                )}
+
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">

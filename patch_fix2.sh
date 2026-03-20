@@ -1,1 +1,0 @@
-sed -i 's/const \[realProfiles, setRealProfiles\] = useState<Profile\[\]>([]);/const \[focusedId, setFocusedId\] = useState<string | null>(null);\n  const \[realProfiles, setRealProfiles\] = useState<Profile\[\]>([]);/g' src/components/PeopleDiscovery.tsx

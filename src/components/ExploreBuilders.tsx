@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'motion/react';
-import { Loader2, Search, Filter, User, MapPin, Briefcase, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Loader2, Search, Filter, User, MapPin, Briefcase, ArrowRight, ArrowLeft, UserPlus, Clock, Check } from 'lucide-react';
+import { Connection } from './UserDashboard';
 import { useSettings } from '../contexts/SettingsContext';
 
 interface UserProfile {
@@ -36,6 +37,8 @@ export default function ExploreBuilders() {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [sortBy, setSortBy] = useState<string>('relevant');
   const [visibleCount, setVisibleCount] = useState(12);
+  const [connections, setConnections] = useState<Connection[]>([]);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -57,9 +60,38 @@ export default function ExploreBuilders() {
           .eq('id', session.user.id)
           .single();
         if (data) setCurrentUser(data as UserProfile);
+
+        // Fetch connections
+        const { data: connData } = await supabase
+          .from('connections')
+          .select('*')
+          .or(`requester_id.eq.${session.user.id},receiver_id.eq.${session.user.id}`);
+        if (connData) setConnections(connData as Connection[]);
       }
     } catch (err) {
       console.error('Error fetching current user:', err);
+    }
+  };
+
+
+  const handleConnect = async (receiverId: string) => {
+    if (!currentUser) return;
+    setActionLoading(receiverId);
+    try {
+      const { data, error } = await supabase
+        .from('connections')
+        .insert([{ requester_id: currentUser.id, receiver_id: receiverId, status: 'pending' }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setConnections(prev => [...prev, data as Connection]);
+      }
+    } catch (err) {
+      console.error('Error sending connection request:', err);
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -271,7 +303,7 @@ export default function ExploreBuilders() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {scoredProfiles.filter(p => p.id !== currentUser?.id).sort((a,b) => b.totalScore - a.totalScore).slice(0, 4).map(profile => (
-                    <BuilderCard key={'top-'+profile.id} profile={profile} badge="🏆 Top Builder" />
+                    <BuilderCard key={'top-'+profile.id} profile={profile} badge="🏆 Top Builder" connection={connections.find(c => c.requester_id === profile.id || c.receiver_id === profile.id)} onConnect={handleConnect} isConnecting={actionLoading === profile.id} currentUserId={currentUser?.id} />
                   ))}
                 </div>
               </section>
@@ -286,11 +318,11 @@ export default function ExploreBuilders() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {currentUser ? (
                     scoredProfiles.filter(p => p.id !== currentUser.id).sort((a,b) => b.skillMatch - a.skillMatch || b.totalScore - a.totalScore).slice(0, 4).map(profile => (
-                      <BuilderCard key={'rec-'+profile.id} profile={profile} badge={profile.skillMatch > 0 ? "✨ Skill Match" : "🔥 Popular"} />
+                      <BuilderCard key={'rec-'+profile.id} profile={profile} badge={profile.skillMatch > 0 ? "✨ Skill Match" : "🔥 Popular"} connection={connections.find(c => c.requester_id === profile.id || c.receiver_id === profile.id)} onConnect={handleConnect} isConnecting={actionLoading === profile.id} currentUserId={currentUser?.id} />
                     ))
                   ) : (
                     scoredProfiles.sort((a,b) => b.totalScore - a.totalScore).slice(4, 8).map(profile => (
-                      <BuilderCard key={'rec-'+profile.id} profile={profile} badge="🔥 Popular" />
+                      <BuilderCard key={'rec-'+profile.id} profile={profile} badge="🔥 Popular" connection={connections.find(c => c.requester_id === profile.id || c.receiver_id === profile.id)} onConnect={handleConnect} isConnecting={actionLoading === profile.id} currentUserId={currentUser?.id} />
                     ))
                   )}
                 </div>
@@ -320,7 +352,7 @@ export default function ExploreBuilders() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <AnimatePresence>
                   {filteredProfiles.slice(0, visibleCount).map((profile) => (
-                    <BuilderCard key={profile.id} profile={profile} />
+                    <BuilderCard key={profile.id} profile={profile} connection={connections.find(c => c.requester_id === profile.id || c.receiver_id === profile.id)} onConnect={handleConnect} isConnecting={actionLoading === profile.id} currentUserId={currentUser?.id} />
                   ))}
                 </AnimatePresence>
               </div>
@@ -344,7 +376,7 @@ export default function ExploreBuilders() {
 }
 
 
-const BuilderCard = React.memo(({ profile, badge }: { profile: ScoredProfile, badge?: string }) => {
+const BuilderCard = React.memo(({ profile, badge, connection, onConnect, isConnecting, currentUserId }: { profile: ScoredProfile, badge?: string, connection?: Connection, onConnect: (id: string) => void, isConnecting: boolean, currentUserId?: string }) => {
   return (
     <motion.div
       layout
@@ -408,6 +440,29 @@ const BuilderCard = React.memo(({ profile, badge }: { profile: ScoredProfile, ba
         >
           View Profile <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
         </a>
+        {/* Connection Action */}
+        {currentUserId && currentUserId !== profile.id && (
+          <div className="w-full pt-4 mt-2 border-t border-white/5">
+            {connection?.status === 'accepted' ? (
+              <div className="w-full flex items-center justify-center gap-2 text-cyan-400 text-sm font-bold bg-cyan-500/10 py-2 rounded-xl">
+                <Check size={16} /> Connected
+              </div>
+            ) : connection?.status === 'pending' ? (
+              <div className="w-full flex items-center justify-center gap-2 text-gray-400 text-sm font-bold bg-white/5 py-2 rounded-xl">
+                <Clock size={16} /> Pending
+              </div>
+            ) : (
+              <button
+                onClick={() => onConnect(profile.id)}
+                disabled={isConnecting}
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white text-sm font-bold py-2 rounded-xl transition-all hover:scale-105 shadow-lg disabled:opacity-50 disabled:hover:scale-100"
+              >
+                {isConnecting ? <Loader2 size={16} className="animate-spin" /> : <UserPlus size={16} />} Connect
+              </button>
+            )}
+          </div>
+        )}
+
       </div>
     </motion.div>
   );
