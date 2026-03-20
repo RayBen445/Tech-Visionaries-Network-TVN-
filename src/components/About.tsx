@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, Users, Lightbulb, Zap } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
+import { useCms } from '../contexts/CmsContext';
 
 export default function About() {
   const { settings } = useSettings();
+  const { content } = useCms();
 
   return (
     <div className="min-h-screen bg-[#0B0F19] text-white py-12 px-4 md:px-8 font-sans selection:bg-cyan-500/30">
@@ -17,7 +19,7 @@ export default function About() {
             About {settings.site_name}
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl leading-relaxed">
-            We are building Africa's most dynamic network for tech innovators, developers, and builders.
+            {content.about_page_headline}
           </p>
         </div>
 
@@ -29,7 +31,7 @@ export default function About() {
               <Lightbulb className="text-cyan-400" /> Our Mission
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              To bridge the gap between learning and building by creating a collaborative ecosystem where African tech talent can thrive, build real-world solutions, and gain global exposure.
+              {content.about_mission}
             </p>
           </section>
 
@@ -38,7 +40,7 @@ export default function About() {
               <Users className="text-purple-400" /> Who We Are
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              {settings.site_name} is more than just a community; it's a launchpad. We are a collective of software engineers, product designers, data scientists, and founders who believe that the future of technology is being built right here in Africa.
+              {settings.site_name} {content.about_who_we_are}
             </p>
           </section>
 

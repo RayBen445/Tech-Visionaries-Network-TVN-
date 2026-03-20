@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, Code, Database, Cloud } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
+import { useCms } from '../contexts/CmsContext';
 
 export default function Projects() {
   const { settings } = useSettings();
+  const { content } = useCms();
 
   return (
     <div className="min-h-screen bg-[#0B0F19] text-white py-12 px-4 md:px-8 font-sans selection:bg-cyan-500/30">
@@ -17,7 +19,7 @@ export default function Projects() {
             Network Projects
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl leading-relaxed">
-            Discover what the {settings.site_name} community is building right now.
+            {content.projects_headline}
           </p>
         </div>
 
@@ -28,7 +30,7 @@ export default function Projects() {
           <Code size={64} className="text-gray-600 mb-6 relative z-10" />
           <h2 className="text-3xl font-bold text-white mb-4 relative z-10">Projects Coming Soon</h2>
           <p className="max-w-md mx-auto text-gray-400 relative z-10 leading-relaxed">
-            Our builders are currently hard at work. This section will feature open-source initiatives, community startups, and featured portfolios from our members. Check back soon!
+            {content.projects_coming_soon}
           </p>
         </div>
 

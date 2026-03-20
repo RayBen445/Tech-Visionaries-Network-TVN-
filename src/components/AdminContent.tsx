@@ -53,12 +53,49 @@ export default function AdminContent() {
     }
   };
 
-  const fields = [
-    { key: 'hero_headline', label: 'Hero Headline', type: 'text' },
-    { key: 'hero_subheadline', label: 'Hero Subheadline', type: 'textarea' },
-    { key: 'about_text', label: 'About Text', type: 'textarea' },
-    { key: 'cta_title', label: 'CTA Title', type: 'text' },
-    { key: 'cta_subtitle', label: 'CTA Subtitle', type: 'textarea' }
+    const fieldGroups = [
+    {
+      title: "Landing Page (Home)",
+      fields: [
+        { key: 'hero_headline', label: 'Hero Headline', type: 'text' },
+        { key: 'hero_subheadline', label: 'Hero Subheadline', type: 'textarea' },
+        { key: 'about_text', label: 'About Text', type: 'textarea' },
+        { key: 'cta_title', label: 'CTA Title', type: 'text' },
+        { key: 'cta_subtitle', label: 'CTA Subtitle', type: 'textarea' }
+      ]
+    },
+    {
+      title: "About Page",
+      fields: [
+        { key: 'about_page_headline', label: 'About Page Headline', type: 'textarea' },
+        { key: 'about_mission', label: 'Our Mission', type: 'textarea' },
+        { key: 'about_who_we_are', label: 'Who We Are', type: 'textarea' }
+      ]
+    },
+    {
+      title: "Projects Page",
+      fields: [
+        { key: 'projects_headline', label: 'Projects Headline', type: 'textarea' },
+        { key: 'projects_coming_soon', label: 'Coming Soon Text', type: 'textarea' }
+      ]
+    },
+    {
+      title: "Community Page",
+      fields: [
+        { key: 'community_headline', label: 'Community Headline', type: 'textarea' },
+        { key: 'community_communication', label: 'Communication Text', type: 'textarea' },
+        { key: 'community_collaboration', label: 'Collaboration Text', type: 'textarea' },
+        { key: 'community_global', label: 'Global Mission Text', type: 'textarea' }
+      ]
+    },
+    {
+      title: "Legal Pages (Supports HTML)",
+      fields: [
+        { key: 'legal_privacy_policy', label: 'Privacy Policy', type: 'textarea' },
+        { key: 'legal_terms_of_service', label: 'Terms of Service', type: 'textarea' },
+        { key: 'legal_code_of_conduct', label: 'Code of Conduct', type: 'textarea' }
+      ]
+    }
   ];
 
   if (loading) return <div className="p-12 text-center"><Loader2 className="animate-spin text-cyan-400 mx-auto" /></div>;
@@ -77,25 +114,30 @@ export default function AdminContent() {
         </div>
       )}
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
-        {fields.map(field => (
-          <div key={field.key} className="space-y-2">
-            <label className="text-sm font-medium text-gray-300">{field.label}</label>
-            {field.type === 'textarea' ? (
-              <textarea
-                value={formData[field.key] || ''}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-                rows={4}
-                className="w-full bg-[#0B0F19]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50 resize-none"
-              />
-            ) : (
-              <input
-                type="text"
-                value={formData[field.key] || ''}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-                className="w-full bg-[#0B0F19]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50"
-              />
-            )}
+      <div className="space-y-8">
+        {fieldGroups.map(group => (
+          <div key={group.title} className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
+            <h2 className="text-xl font-bold border-b border-white/10 pb-4 text-cyan-400">{group.title}</h2>
+            {group.fields.map(field => (
+              <div key={field.key} className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">{field.label}</label>
+                {field.type === 'textarea' ? (
+                  <textarea
+                    value={formData[field.key] || ''}
+                    onChange={(e) => handleChange(field.key, e.target.value)}
+                    rows={field.key.startsWith('legal_') ? 8 : 4}
+                    className="w-full bg-[#0B0F19]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50 resize-y font-mono text-sm"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={formData[field.key] || ''}
+                    onChange={(e) => handleChange(field.key, e.target.value)}
+                    className="w-full bg-[#0B0F19]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50"
+                  />
+                )}
+              </div>
+            ))}
           </div>
         ))}
       </div>
