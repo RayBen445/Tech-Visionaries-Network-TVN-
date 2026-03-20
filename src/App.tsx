@@ -12,6 +12,10 @@ import Blog from "./components/Blog";
 import UserDashboard from "./components/UserDashboard";
 import PublicProfile from "./components/PublicProfile";
 import ExploreBuilders from "./components/ExploreBuilders";
+import About from "./components/About";
+import Projects from "./components/Projects";
+import Community from "./components/Community";
+import { PrivacyPolicy, TermsOfService, CodeOfConduct } from "./components/Legal";
 import { SettingsProvider } from "./contexts/SettingsContext";
 import { CmsProvider } from "./contexts/CmsContext";
 import AnnouncementBanner from "./components/AnnouncementBanner";
@@ -23,6 +27,7 @@ export default function App() {
   const [isDashboardRoute, setIsDashboardRoute] = useState(false);
   const [isProfileRoute, setIsProfileRoute] = useState(false);
   const [isExploreRoute, setIsExploreRoute] = useState(false);
+  const [staticRoute, setStaticRoute] = useState<string | null>(null);
 
   useEffect(() => {
     // Simple path-based routing
@@ -33,6 +38,18 @@ export default function App() {
       setIsBlogRoute(true);
     } else if (path === '/dashboard') {
       setIsDashboardRoute(true);
+    } else if (path === '/about') {
+      setStaticRoute('about');
+    } else if (path === '/projects') {
+      setStaticRoute('projects');
+    } else if (path === '/community') {
+      setStaticRoute('community');
+    } else if (path === '/privacy') {
+      setStaticRoute('privacy');
+    } else if (path === '/terms') {
+      setStaticRoute('terms');
+    } else if (path === '/conduct') {
+      setStaticRoute('conduct');
     } else if (path === '/explore') {
       setIsExploreRoute(true);
     } else if (path.startsWith('/u/')) {
@@ -50,6 +67,21 @@ export default function App() {
       </SettingsProvider>
     );
   }
+  if (staticRoute) {
+    return (
+      <SettingsProvider>
+        <CmsProvider>
+          {staticRoute === "about" && <About />}
+          {staticRoute === "projects" && <Projects />}
+          {staticRoute === "community" && <Community />}
+          {staticRoute === "privacy" && <PrivacyPolicy />}
+          {staticRoute === "terms" && <TermsOfService />}
+          {staticRoute === "conduct" && <CodeOfConduct />}
+        </CmsProvider>
+      </SettingsProvider>
+    );
+  }
+
   if (isExploreRoute) {
     return (
       <SettingsProvider>

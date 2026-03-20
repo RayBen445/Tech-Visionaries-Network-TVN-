@@ -46,12 +46,12 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
           >
             Join the Network <ArrowRight size={20} />
           </button>
-          <button
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+          <a
+            href="/explore"
             className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-4 px-10 rounded-xl font-medium transition-all hover:scale-105"
           >
             Explore <Compass size={20} />
-          </button>
+          </a>
         </div>
       </section>
 
@@ -162,21 +162,21 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
         <div className="space-y-4">
           <h4 className="text-white font-semibold">Platform</h4>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="#" className="hover:text-cyan-400 transition-colors">About</a></li>
-            <li><a href="#" className="hover:text-cyan-400 transition-colors">Projects</a></li>
+            <li><a href="/about" className="hover:text-cyan-400 transition-colors">About</a></li>
+            <li><a href="/projects" className="hover:text-cyan-400 transition-colors">Projects</a></li>
             {features.show_blog && (
               <li><a href="/blog" className="hover:text-cyan-400 transition-colors">Blog</a></li>
             )}
-            <li><a href="#" className="hover:text-cyan-400 transition-colors">Community</a></li>
+            <li><a href="/community" className="hover:text-cyan-400 transition-colors">Community</a></li>
           </ul>
         </div>
 
         <div className="space-y-4">
           <h4 className="text-white font-semibold">Legal</h4>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="#" className="hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-cyan-400 transition-colors">Terms of Service</a></li>
-            <li><a href="#" className="hover:text-cyan-400 transition-colors">Code of Conduct</a></li>
+            <li><a href="/privacy" className="hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="/terms" className="hover:text-cyan-400 transition-colors">Terms of Service</a></li>
+            <li><a href="/conduct" className="hover:text-cyan-400 transition-colors">Code of Conduct</a></li>
           </ul>
         </div>
 
