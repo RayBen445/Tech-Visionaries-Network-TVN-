@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion } from 'motion/react';
 import { Shield, Loader2, ArrowRight } from 'lucide-react';
-import AdminSettings from './AdminSettings';
+import AdminDashboard from './AdminDashboard';
 
 export default function AdminLogin() {
   const [session, setSession] = useState<any>(null);
@@ -61,15 +61,7 @@ export default function AdminLogin() {
   if (session) {
     return (
       <div className="relative">
-        <div className="absolute top-4 right-4 z-50">
-          <button
-            onClick={handleLogout}
-            className="text-sm bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            Logout Admin
-          </button>
-        </div>
-        <AdminSettings />
+        <AdminDashboard />
       </div>
     );
   }

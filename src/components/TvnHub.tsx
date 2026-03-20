@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Code, Network, Lightbulb, TrendingUp, Compass, UserPlus, PlayCircle, Zap, Shield, Mail, Twitter, Linkedin, Github } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
+import { useCms } from '../contexts/CmsContext';
 import PeopleDiscovery from './PeopleDiscovery';
 
 interface TvnHubProps {
@@ -10,6 +11,7 @@ interface TvnHubProps {
 
 const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
   const { settings } = useSettings();
+  const { content, features } = useCms();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -30,11 +32,11 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
         </motion.div>
 
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-purple-200">
-          Africa’s Premier <br className="hidden md:block"/> Tech Builders Network
+          {content.hero_headline}
         </h1>
 
         <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-          For developers, builders, and tech enthusiasts shaping the future of African innovation.
+          {content.hero_subheadline}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
@@ -57,10 +59,12 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
       <section id="about" className="max-w-3xl mx-auto scroll-mt-32">
         <h2 className="text-3xl font-bold mb-6 text-white">What is TVN?</h2>
         <p className="text-lg text-gray-400 leading-relaxed">
-          Tech Visionaries Network (TVN) is an exclusive ecosystem designed to connect the brightest minds in African tech. We bridge the gap between learning and building by fostering a community where innovators collaborate on real-world projects, share resources, and accelerate their careers.
+          {content.about_text}
         </p>
       </section>
 
+      {features.show_value_props && (
+      <>
       {/* 3. VALUE PROPOSITION (4 Cards) */}
       <section className="max-w-5xl mx-auto">
         <h2 className="text-3xl font-bold mb-12 text-white">Why Join Us</h2>
@@ -88,6 +92,11 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
         </div>
       </section>
 
+            </>
+      )}
+
+      {features.show_how_it_works && (
+      <>
       {/* 4. HOW IT WORKS */}
       <section className="max-w-5xl mx-auto relative">
         <h2 className="text-3xl font-bold mb-16 text-white">How It Works</h2>
@@ -103,18 +112,26 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
         </div>
       </section>
 
+            </>
+      )}
+
+      {features.show_community && (
+      <>
       {/* 5. COMMUNITY PREVIEW */}
       <section className="w-full">
         <PeopleDiscovery />
       </section>
 
+            </>
+      )}
+
       {/* 6. CTA SECTION */}
       <section className="max-w-4xl mx-auto bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-3xl p-12 md:p-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-cyan-500/5 blur-[100px] z-0"></div>
         <div className="relative z-10 space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-white">Ready to shape the future?</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white">{content.cta_title}</h2>
           <p className="text-xl text-gray-400 max-w-xl mx-auto">
-            Spots are limited for our founding member cohort. Apply now to secure your place.
+            {content.cta_subtitle}
           </p>
           <button
             onClick={onJoinClick}
@@ -147,6 +164,9 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
           <ul className="space-y-2 text-gray-400">
             <li><a href="#" className="hover:text-cyan-400 transition-colors">About</a></li>
             <li><a href="#" className="hover:text-cyan-400 transition-colors">Projects</a></li>
+            {features.show_blog && (
+              <li><a href="/blog" className="hover:text-cyan-400 transition-colors">Blog</a></li>
+            )}
             <li><a href="#" className="hover:text-cyan-400 transition-colors">Community</a></li>
           </ul>
         </div>
