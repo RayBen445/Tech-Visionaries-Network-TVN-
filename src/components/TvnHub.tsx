@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Code, Network, Lightbulb, TrendingUp, Compass, UserPlus, PlayCircle, Zap, Shield, Mail, Twitter, Linkedin, Github } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
 import PeopleDiscovery from './PeopleDiscovery';
 
 interface TvnHubProps {
@@ -8,6 +9,7 @@ interface TvnHubProps {
 }
 
 const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
+  const { settings } = useSettings();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -126,7 +128,10 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
       {/* 7. FOOTER */}
       <footer className="max-w-6xl mx-auto pt-20 pb-8 border-t border-white/10 mt-32 text-left grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="col-span-1 md:col-span-2 space-y-6">
-          <div className="text-2xl font-bold text-white tracking-tight">TVN</div>
+          <div className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+            {settings.logo_url && <img src={settings.logo_url} alt="Logo" className="h-8 w-auto object-contain" />}
+            {settings.site_name || 'TVN'}
+          </div>
           <p className="text-gray-400 max-w-sm">
             Africa's Tech Builders Network. Empowering the next generation of digital innovators.
           </p>
@@ -156,7 +161,7 @@ const TvnHub: React.FC<TvnHubProps> = ({ onJoinClick }) => {
         </div>
 
         <div className="col-span-1 md:col-span-4 text-center mt-12 pt-8 border-t border-white/5 text-gray-500 text-sm font-mono tracking-widest uppercase">
-          © {new Date().getFullYear()} Tech Visionaries Network
+          © {new Date().getFullYear()} {settings.site_name}
         </div>
       </footer>
     </motion.div>
