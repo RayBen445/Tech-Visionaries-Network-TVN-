@@ -11,6 +11,7 @@ import AdminLogin from "./components/AdminLogin";
 import Blog from "./components/Blog";
 import UserDashboard from "./components/UserDashboard";
 import PublicProfile from "./components/PublicProfile";
+import ExploreBuilders from "./components/ExploreBuilders";
 import { SettingsProvider } from "./contexts/SettingsContext";
 import { CmsProvider } from "./contexts/CmsContext";
 import AnnouncementBanner from "./components/AnnouncementBanner";
@@ -21,6 +22,7 @@ export default function App() {
   const [isBlogRoute, setIsBlogRoute] = useState(false);
   const [isDashboardRoute, setIsDashboardRoute] = useState(false);
   const [isProfileRoute, setIsProfileRoute] = useState(false);
+  const [isExploreRoute, setIsExploreRoute] = useState(false);
 
   useEffect(() => {
     // Simple path-based routing
@@ -31,6 +33,8 @@ export default function App() {
       setIsBlogRoute(true);
     } else if (path === '/dashboard') {
       setIsDashboardRoute(true);
+    } else if (path === '/explore') {
+      setIsExploreRoute(true);
     } else if (path.startsWith('/u/')) {
       setIsProfileRoute(true);
       setIsBlogRoute(true);
@@ -46,6 +50,16 @@ export default function App() {
       </SettingsProvider>
     );
   }
+  if (isExploreRoute) {
+    return (
+      <SettingsProvider>
+        <CmsProvider>
+          <ExploreBuilders />
+        </CmsProvider>
+      </SettingsProvider>
+    );
+  }
+
   if (isProfileRoute) {
     return (
       <SettingsProvider>
